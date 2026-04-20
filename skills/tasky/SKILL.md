@@ -1,6 +1,6 @@
 ---
 name: tasky
-description: Nimbility — intent-driven exploratory delivery. Manages projects, roadmaps, tracks, milestones, and tasks through natural conversation. Activate for any mention of: building something new, decomposing a vision, creating project structure, working on tasks, checking progress, or managing exploratory delivery workflows.
+description: "Nimbility — intent-driven exploratory delivery. Manages projects, roadmaps, tracks, milestones, and tasks through natural conversation. Activate for any mention of: building something new, decomposing a vision, creating project structure, working on tasks, checking progress, or managing exploratory delivery workflows."
 ---
 
 # Tasky
