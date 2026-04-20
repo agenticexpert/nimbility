@@ -3,7 +3,7 @@
 view_milestones.py — Render a Gantt chart for all milestones in a roadmap.
 
 Usage:
-    python view_milestones.py <project> <roadmap> [--all]
+    python view_milestones.py <project> <roadmap> [<track>] [--all]
 
     --all  Show focus-hidden milestones (marked with ~, no Gantt column).
 
@@ -147,7 +147,7 @@ def load_milestone_stats(track_dir, roadmap, track_name, mslug, data):
     }
 
 
-def load_all_milestones(project, roadmap):
+def load_all_milestones(project, roadmap, track_filter=None):
     """Returns (seq_milestones, oob_milestones, hidden_milestones)."""
     data = load_project_json(project)
     _, _, hidden_milestones_dict = parse_focus_hide(data)
@@ -172,6 +172,8 @@ def load_all_milestones(project, roadmap):
     global_seq = 0
 
     for track_name in all_tracks:
+        if track_filter and track_name != track_filter:
+            continue
         track_dir = os.path.join(roadmap_dir, track_name)
         if not os.path.isdir(track_dir):
             continue
@@ -420,12 +422,14 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("project")
     parser.add_argument("roadmap")
+    parser.add_argument("track", nargs="?", default=None, help="Filter by track (optional)")
     parser.add_argument("--all", dest="show_all", action="store_true", default=False,
                         help="Show focus-hidden milestones (marked with ~).")
     args = parser.parse_args()
 
-    milestones, oob_milestones, hidden_milestones = load_all_milestones(args.project, args.roadmap)
-    print(render(args.roadmap, milestones, oob_milestones, hidden_milestones, show_all=args.show_all))
+    milestones, oob_milestones, hidden_milestones = load_all_milestones(args.project, args.roadmap, args.track)
+    title = f"{args.roadmap}/{args.track}" if args.track else args.roadmap
+    print(render(title, milestones, oob_milestones, hidden_milestones, show_all=args.show_all))
 
 
 if __name__ == "__main__":
